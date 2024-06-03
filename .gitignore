@@ -154,3 +154,4 @@ sysinfo.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,unity
 /AI Exam/venv
+/AI Exam/venv3.9
