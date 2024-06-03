@@ -23,13 +23,10 @@ namespace Runtime.Field
             this.field = this.transform.parent.GetComponent<Field>();
         }
 
-        #endregion
-
-        #region Internal
-
-        private void AddGoalScore()
+        private void OnTriggerEnter(Collider other)
         {
-            this.field.AddGoal(this.team);
+            if (other.gameObject.name.Equals("Ball"))
+                this.field.AddGoal(this.team);
         }
 
         #endregion

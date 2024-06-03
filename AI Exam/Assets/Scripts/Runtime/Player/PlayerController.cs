@@ -36,6 +36,10 @@ namespace Runtime.Player
 
         private float previousBallDistance = 100;
 
+        private Vector3 startPosition;
+
+        private Quaternion startRotation;
+
         #endregion
 
         #region Build In States
@@ -44,10 +48,13 @@ namespace Runtime.Player
         {
             this.rb = this.GetComponent<Rigidbody>();
 
-            if (this.ball == null)
+            if (this.ball is null)
                 throw new Exception($"Ball missing for: {this.gameObject.name}");
-            if (this.goal == null)
+            if (this.goal is null)
                 throw new Exception($"Goal missing for: {this.gameObject.name}");
+
+            this.startPosition = this.transform.position;
+            this.startRotation = this.transform.rotation;
         }
 
         private void Update()
@@ -66,13 +73,19 @@ namespace Runtime.Player
             this.UpdateRewards();
         }
 
+        public override void OnEpisodeBegin()
+        {
+            this.transform.position = this.startPosition;
+            this.transform.rotation = this.startRotation;
+        }
+
         public override void OnActionReceived(ActionBuffers actions)
         {
             ActionSegment<float> c = actions.ContinuousActions;
-            Debug.Log($"|{c[0]} | {c[1]}|  -- {actions.DiscreteActions[0]}");
+            Debug.Log($"|{c[0]} | {c[1]}|  -- {actions.DiscreteActions[0] - 1}");
 
-            this.moveDirection = new Vector3(c[0] * 2f - 1f, 0f, c[1] * 2f - 1f);
-            this.rotateDirection = actions.DiscreteActions[0];
+            this.moveDirection = new Vector3(c[0], 0f, c[1]).normalized;
+            this.rotateDirection = actions.DiscreteActions[0] - 1;
         }
 
         public override void CollectObservations(VectorSensor sensor)
@@ -87,6 +100,8 @@ namespace Runtime.Player
         {
             if (!other.gameObject.name.Equals("Ball"))
                 return;
+
+            this.SetReward(25);
         }
 
         #endregion
@@ -95,7 +110,7 @@ namespace Runtime.Player
 
         public void SetBallInSight(bool set) => this.ballInSight = set;
 
-        public void SetPredictedBallPosition(Vector3 set) => this.predictedBallPosition = set;
+        public void SetPredictedBallPosition(Vector3 set) => this.predictedBallPosition = set.normalized;
 
         #endregion
 
@@ -110,6 +125,7 @@ namespace Runtime.Player
 
         #region Internal
 
+#if UNITY_EDITOR
         private void BallInSight()
         {
             Vector2 playerPos = new Vector2(this.transform.position.x, this.transform.position.z),
@@ -119,14 +135,21 @@ namespace Runtime.Player
 
         private void BallPosition()
         {
+            if (!this.ballInSight)
+                return;
+
             this.predictedBallPosition = this.ball.position +
                                          new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),
                                              Random.Range(-1f, 1f));
         }
+#endif
 
         private void UpdateRewards()
         {
             this.SetReward(this.ballInSight ? 5 : -5);
+
+            if (!this.ballInSight)
+                return;
 
             float dist = Vector3.Distance(this.predictedBallPosition, this.transform.position);
             this.SetReward(dist < this.previousBallDistance ? 5 : -5);

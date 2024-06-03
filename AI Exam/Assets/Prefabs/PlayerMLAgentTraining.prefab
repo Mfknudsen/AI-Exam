@@ -198,6 +198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1721828325414312414}
+  - component: {fileID: 737151239017620355}
   - component: {fileID: 7700285512022169889}
   - component: {fileID: 7179773686993386982}
   - component: {fileID: 198748305202638159}
@@ -226,6 +227,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &737151239017620355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772394634007290126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1
 --- !u!114 &7700285512022169889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,8 +257,8 @@ MonoBehaviour:
     VectorObservationSize: 1
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 3
-      BranchSizes: 02000000
+      m_NumContinuousActions: 2
+      BranchSizes: 03000000
     VectorActionSize: 
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
@@ -271,10 +286,10 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 1000
+  MaxStep: 0
   syntheticCameraInput: 1
-  moveSpeed: 5
-  rotateSpeed: 10
+  moveSpeed: 0.35
+  rotateSpeed: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 8
