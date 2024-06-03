@@ -672,7 +672,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d5043aa0f3e9f9745a8e10866015c3c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -752,7 +752,7 @@ Transform:
   - {fileID: 1462370692508821602}
   - {fileID: 8422964168282201339}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2351384299373127171
 MonoBehaviour:
@@ -768,6 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team1: {fileID: 758939990172416956}
   team2: {fileID: 8146955788793019867}
+  ball: {fileID: 1462370692508821602}
 --- !u!1 &6857373875941230638
 GameObject:
   m_ObjectHideFlags: 0

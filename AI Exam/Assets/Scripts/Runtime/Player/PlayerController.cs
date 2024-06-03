@@ -1,6 +1,7 @@
 #region Libraries
 
 using System;
+using Runtime.Field;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -34,7 +35,7 @@ namespace Runtime.Player
 
         private Vector3 predictedBallPosition;
 
-        private float previousBallDistance = 100;
+        private float previousBallDistance = 100, ballGoalDistance = 100, ballSightAngle;
 
         private Vector3 startPosition;
 
@@ -82,8 +83,6 @@ namespace Runtime.Player
         public override void OnActionReceived(ActionBuffers actions)
         {
             ActionSegment<float> c = actions.ContinuousActions;
-            Debug.Log($"|{c[0]} | {c[1]}|  -- {actions.DiscreteActions[0] - 1}");
-
             this.moveDirection = new Vector3(c[0], 0f, c[1]).normalized;
             this.rotateDirection = actions.DiscreteActions[0] - 1;
         }
@@ -94,14 +93,21 @@ namespace Runtime.Player
             sensor.AddObservation(this.ballInSight);
             sensor.AddObservation(this.predictedBallPosition);
             sensor.AddObservation(this.goal.transform.position);
+            sensor.AddObservation(this.previousBallDistance);
+            sensor.AddObservation(this.ballSightAngle);
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if (!other.gameObject.name.Equals("Ball"))
-                return;
+            Debug.Log(other.gameObject.layer.ToString());
+            if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                this.AddReward(-50);
+                this.transform.parent.GetComponent<Team>()?.EndEpisode();
+            }
 
-            this.SetReward(25);
+            if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
+                this.AddReward(50);
         }
 
         #endregion
@@ -118,7 +124,7 @@ namespace Runtime.Player
 
         public void AddGoalReward()
         {
-            this.SetReward(50);
+            this.AddReward(50);
         }
 
         #endregion
@@ -146,14 +152,19 @@ namespace Runtime.Player
 
         private void UpdateRewards()
         {
-            this.SetReward(this.ballInSight ? 5 : -5);
-
-            if (!this.ballInSight)
-                return;
-
+            this.SetReward(this.ballInSight ? 1 : -1);
+            
             float dist = Vector3.Distance(this.predictedBallPosition, this.transform.position);
-            this.SetReward(dist < this.previousBallDistance ? 5 : -5);
+            this.AddReward(dist < this.previousBallDistance ? 1 : -1);
             this.previousBallDistance = dist;
+
+            dist = Vector3.Distance(this.predictedBallPosition, this.goal.transform.position);
+            this.AddReward(dist < this.ballGoalDistance ? 1 : -1);
+            this.ballGoalDistance = dist;
+
+            float angle = Vector3.Angle(this.transform.forward, this.predictedBallPosition - this.transform.position);
+            this.AddReward(angle < this.ballSightAngle ? 1 : -1);
+            this.ballSightAngle = angle;
         }
 
         #endregion

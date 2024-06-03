@@ -31,12 +31,24 @@ namespace Runtime.Field
 
         #endregion
 
+        #region In
+
+        public void EndEpisode() => this.transform.parent.parent.GetComponent<Field>().EndEpisode();
+
+        public void EndEpisodeForPlayers()
+        {
+            foreach (PlayerController playerController in this.playersInTeam)
+                playerController.EndEpisode();
+        }
+
+        #endregion
+
         #region Internal
 
         private void OnGameEnd(Team team)
         {
             if (team != this) return;
-            
+
             foreach (PlayerController playerController in this.GetComponentsInChildren<PlayerController>())
                 playerController.AddGoalReward();
         }
