@@ -1,0 +1,39 @@
+{
+    "Soccer": {
+        "checkpoints": [
+            {
+                "steps": 499622,
+                "file_path": "results\\s1\\Soccer\\Soccer-499622.onnx",
+                "reward": -5.948780701983543,
+                "creation_time": 1717619681.8819735,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-499622.pt"
+                ]
+            },
+            {
+                "steps": 756706,
+                "file_path": "results\\s1\\Soccer\\Soccer-756706.onnx",
+                "reward": 90.93837706148625,
+                "creation_time": 1717620248.7905328,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-756706.pt"
+                ]
+            }
+        ],
+        "elo": 1203.8780749614448,
+        "final_checkpoint": {
+            "steps": 756706,
+            "file_path": "results\\s1\\Soccer.onnx",
+            "reward": 90.93837706148625,
+            "creation_time": 1717620248.7905328,
+            "auxillary_file_paths": [
+                "results\\s1\\Soccer\\Soccer-756706.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.3.0+cpu"
+    }
+}

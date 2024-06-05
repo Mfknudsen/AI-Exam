@@ -291,7 +291,10 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   team: 0
-  position: 0
+  ownGoal: {fileID: 0}
+  otherGoal: {fileID: 0}
+  teamRole: 0
+  ball: {fileID: 0}
   agentRb: {fileID: 0}
   initialPos: {x: 0, y: 0, z: 0}
   rotSign: 0
@@ -379,6 +382,8 @@ MonoBehaviour:
   - wall
   - blueAgent
   - purpleAgent
+  - cornerBlue
+  - cornerPurple
   m_RaysPerDirection: 5
   m_MaxRayDegrees: 60
   m_SphereCastRadius: 0.5
@@ -443,6 +448,8 @@ MonoBehaviour:
   - wall
   - blueAgent
   - purpleAgent
+  - cornerBlue
+  - cornerPurple
   m_RaysPerDirection: 1
   m_MaxRayDegrees: 45
   m_SphereCastRadius: 0.5

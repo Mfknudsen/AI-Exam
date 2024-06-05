@@ -862,7 +862,7 @@ MonoBehaviour:
   purpleMaterial: {fileID: 2100000, guid: 863fd89923070b94c842b685eb5bb4b4, type: 2}
   blueMaterial: {fileID: 2100000, guid: ac689e77971a7d141a02376959a74453, type: 2}
   randomizePlayersTeamForTraining: 1
-  agentRunSpeed: 2
+  agentRunSpeed: 1
 --- !u!114 &802282651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1619,6 +1619,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1791535275756713, guid: 5eca46a2c21fa694e8a84c3cea90e9cf, type: 3}
+      propertyPath: m_Size.x
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1791535275756713, guid: 5eca46a2c21fa694e8a84c3cea90e9cf, type: 3}
+      propertyPath: m_Size.z
+      value: 21
+      objectReference: {fileID: 0}
     - target: {fileID: 2610966833995906398, guid: 5eca46a2c21fa694e8a84c3cea90e9cf, type: 3}
       propertyPath: m_RootOrder
       value: 3
