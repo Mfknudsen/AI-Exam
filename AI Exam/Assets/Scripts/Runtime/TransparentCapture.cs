@@ -27,7 +27,7 @@ public class TransparentCapture : MonoBehaviour
             for (int i = 0; i < numberOfAngles; i++)
             {
                 float angle = (360f / numberOfAngles) * i;
-                Vector3 cameraPosition = targetObject.transform.position + new Vector3(distance * Mathf.Sin(angle * Mathf.Deg2Rad), 0, distance * Mathf.Cos(angle * Mathf.Deg2Rad));
+                Vector3 cameraPosition = targetObject.transform.position + new Vector3(distance * Mathf.Sin(angle * Mathf.Deg2Rad), 0.25f, distance * Mathf.Cos(angle * Mathf.Deg2Rad));
                 screenshotCamera.transform.position = cameraPosition;
                 screenshotCamera.transform.LookAt(targetObject.transform);
                 yield return new WaitForEndOfFrame();
