@@ -1,172 +1,231 @@
 #region Libraries
 
-using System;
-using Runtime.Field;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
-using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Policies;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 #endregion
 
 namespace Runtime.Player
 {
-    public class PlayerController : Agent
+    public enum Team
     {
-        #region Values
+        Blue = 0,
+        Purple = 1
+    }
 
-#if UNITY_EDITOR
-        [SerializeField] private bool syntheticCameraInput;
-#endif
+    public sealed class PlayerController : Agent
+    {
+        // Note that that the detectable tags are different for the blue and purple teams. The order is
+        // * ball
+        // * own goal
+        // * opposing goal
+        // * wall
+        // * own teammate
+        // * opposing player
 
-        private Rigidbody rb;
-
-        private Vector3 moveDirection;
-        private int rotateDirection;
-
-        [SerializeField] private float moveSpeed = 5, rotateSpeed = 10;
-
-        [SerializeField] private LayerMask layerMask;
-
-        [SerializeField] private Transform ball, goal;
-
-        private bool ballInSight;
-
-        private Vector3 predictedBallPosition;
-
-        private float previousBallDistance = 100, ballGoalDistance = 100, ballSightAngle;
-
-        private Vector3 startPosition;
-
-        private Quaternion startRotation;
-
-        #endregion
-
-        #region Build In States
-
-        private void Start()
+        public enum Position
         {
-            this.rb = this.GetComponent<Rigidbody>();
-
-            if (this.ball is null)
-                throw new Exception($"Ball missing for: {this.gameObject.name}");
-            if (this.goal is null)
-                throw new Exception($"Goal missing for: {this.gameObject.name}");
-
-            this.startPosition = this.transform.position;
-            this.startRotation = this.transform.rotation;
+            Generic,
+            Striker,
+            Goalie,
         }
 
-        private void Update()
+        [HideInInspector] public Team team;
+
+        private float mKickPower;
+
+        // The coefficient for the reward for colliding with a ball. Set using curriculum.
+        private float mBallTouch;
+        public Position position;
+
+        private const float KPower = 2000f;
+        private float mExistential;
+        private float mLateralSpeed;
+        private float mForwardSpeed;
+
+
+        [HideInInspector] public Rigidbody agentRb;
+        private SoccerSettings mSoccerSettings;
+        private BehaviorParameters mBehaviorParameters;
+        public Vector3 initialPos;
+        public float rotSign;
+
+        private EnvironmentParameters mResetParams;
+
+        public override void Initialize()
         {
-#if UNITY_EDITOR
-            if (this.syntheticCameraInput)
+            FieldEnvironment envController = this.GetComponentInParent<FieldEnvironment>();
+            if (envController != null)
             {
-                this.BallInSight();
-                this.BallPosition();
+                this.mExistential = 1f / envController.maxEnvironmentSteps;
             }
-#endif
+            else
+            {
+                this.mExistential = 1f / this.MaxStep;
+            }
 
-            this.rb.MovePosition(this.transform.position + this.moveDirection * (this.moveSpeed * Time.deltaTime));
-            this.transform.Rotate(Vector3.up, this.rotateDirection * this.rotateSpeed * Time.deltaTime);
+            this.mBehaviorParameters = this.gameObject.GetComponent<BehaviorParameters>();
+            if (this.mBehaviorParameters.TeamId == (int)Team.Blue)
+            {
+                this.team = Team.Blue;
+                //this.initialPos = new Vector3(this.transform.position.x - 5f, .5f, this.transform.position.z);
+                this.rotSign = 1f;
+            }
+            else
+            {
+                this.team = Team.Purple;
+                //this.initialPos = new Vector3(this.transform.position.x + 5f, .5f, this.transform.position.z);
+                this.rotSign = -1f;
+            }
 
-            this.UpdateRewards();
+            this.initialPos = this.transform.position;
+
+            if (this.position == Position.Goalie)
+            {
+                this.mLateralSpeed = 1.0f;
+                this.mForwardSpeed = 1.0f;
+            }
+            else if (this.position == Position.Striker)
+            {
+                this.mLateralSpeed = 0.3f;
+                this.mForwardSpeed = 1.3f;
+            }
+            else
+            {
+                this.mLateralSpeed = 0.3f;
+                this.mForwardSpeed = 1.0f;
+            }
+
+            this.mSoccerSettings = FindObjectOfType<SoccerSettings>();
+            this.agentRb = this.GetComponent<Rigidbody>();
+            this.agentRb.maxAngularVelocity = 500;
+
+            this.mResetParams = Academy.Instance.EnvironmentParameters;
+        }
+
+        private void MoveAgent(ActionSegment<int> act)
+        {
+            Vector3 dirToGo = Vector3.zero;
+            Vector3 rotateDir = Vector3.zero;
+
+            this.mKickPower = 0f;
+
+            int forwardAxis = act[0];
+            int rightAxis = act[1];
+            int rotateAxis = act[2];
+
+            switch (forwardAxis)
+            {
+                case 1:
+                    dirToGo = this.transform.forward * this.mForwardSpeed;
+                    this.mKickPower = 1f;
+                    break;
+                case 2:
+                    dirToGo = this.transform.forward * -this.mForwardSpeed;
+                    break;
+            }
+
+            switch (rightAxis)
+            {
+                case 1:
+                    dirToGo = this.transform.right * this.mLateralSpeed;
+                    break;
+                case 2:
+                    dirToGo = this.transform.right * -this.mLateralSpeed;
+                    break;
+            }
+
+            rotateDir = rotateAxis switch
+            {
+                1 => this.transform.up * -1f,
+                2 => this.transform.up * 1f,
+                _ => rotateDir
+            };
+
+            this.transform.Rotate(rotateDir, Time.deltaTime * 100f);
+            //this.agentRb.AddForce(dirToGo * this.mSoccerSettings.agentRunSpeed, ForceMode.VelocityChange);
+            this.agentRb.MovePosition(this.transform.position +
+                                      dirToGo * this.mSoccerSettings.agentRunSpeed * Time.deltaTime);
+        }
+
+        public override void OnActionReceived(ActionBuffers actionBuffers)
+        {
+            if (this.position == Position.Goalie)
+            {
+                // Existential bonus for Goalies.
+                this.AddReward(this.mExistential);
+            }
+            else if (this.position == Position.Striker)
+            {
+                // Existential penalty for Strikers
+                this.AddReward(-this.mExistential);
+            }
+
+            this.MoveAgent(actionBuffers.DiscreteActions);
+        }
+
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            ActionSegment<int> discreteActionsOut = actionsOut.DiscreteActions;
+            //forward
+            if (Input.GetKey(KeyCode.W))
+            {
+                discreteActionsOut[0] = 1;
+            }
+
+            if (Input.GetKey(KeyCode.S))
+            {
+                discreteActionsOut[0] = 2;
+            }
+
+            //rotate
+            if (Input.GetKey(KeyCode.A))
+            {
+                discreteActionsOut[2] = 1;
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                discreteActionsOut[2] = 2;
+            }
+
+            //right
+            if (Input.GetKey(KeyCode.E))
+            {
+                discreteActionsOut[1] = 1;
+            }
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                discreteActionsOut[1] = 2;
+            }
+        }
+
+        /// <summary>
+        /// Used to provide a "kick" to the ball.
+        /// </summary>
+        private void OnCollisionEnter(Collision c)
+        {
+            if (!c.gameObject.CompareTag("ball")) return;
+
+            float force = KPower * this.mKickPower;
+            if (this.position == Position.Goalie)
+            {
+                force = KPower;
+            }
+
+            this.AddReward(.2f * this.mBallTouch);
+            Vector3 dir = c.contacts[0].point - this.transform.position;
+            dir = dir.normalized;
+            c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
         }
 
         public override void OnEpisodeBegin()
         {
-            this.transform.position = this.startPosition;
-            this.transform.rotation = this.startRotation;
+            //this.mBallTouch = this.mResetParams.GetWithDefault("ball_touch", 0);
+            this.mBallTouch = 1;
         }
-
-        public override void OnActionReceived(ActionBuffers actions)
-        {
-            ActionSegment<float> c = actions.ContinuousActions;
-            this.moveDirection = new Vector3(c[0], 0f, c[1]).normalized;
-            this.rotateDirection = actions.DiscreteActions[0] - 1;
-        }
-
-        public override void CollectObservations(VectorSensor sensor)
-        {
-            sensor.AddObservation(this.transform.position);
-            sensor.AddObservation(this.ballInSight);
-            sensor.AddObservation(this.predictedBallPosition);
-            sensor.AddObservation(this.goal.transform.position);
-            sensor.AddObservation(this.previousBallDistance);
-            sensor.AddObservation(this.ballSightAngle);
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            Debug.Log(other.gameObject.layer.ToString());
-            if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
-            {
-                this.AddReward(-50);
-                this.transform.parent.GetComponent<Team>()?.EndEpisode();
-            }
-
-            if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
-                this.AddReward(50);
-        }
-
-        #endregion
-
-        #region Setters
-
-        public void SetBallInSight(bool set) => this.ballInSight = set;
-
-        public void SetPredictedBallPosition(Vector3 set) => this.predictedBallPosition = set.normalized;
-
-        #endregion
-
-        #region In
-
-        public void AddGoalReward()
-        {
-            this.AddReward(50);
-        }
-
-        #endregion
-
-        #region Internal
-
-#if UNITY_EDITOR
-        private void BallInSight()
-        {
-            Vector2 playerPos = new Vector2(this.transform.position.x, this.transform.position.z),
-                ballPos = new Vector2(this.ball.transform.position.x, this.ball.transform.position.z);
-            this.ballInSight = Vector2.Angle(playerPos, ballPos) < 40f;
-        }
-
-        private void BallPosition()
-        {
-            if (!this.ballInSight)
-                return;
-
-            this.predictedBallPosition = this.ball.position +
-                                         new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),
-                                             Random.Range(-1f, 1f));
-        }
-#endif
-
-        private void UpdateRewards()
-        {
-            this.SetReward(this.ballInSight ? 1 : -1);
-            
-            float dist = Vector3.Distance(this.predictedBallPosition, this.transform.position);
-            this.AddReward(dist < this.previousBallDistance ? 1 : -1);
-            this.previousBallDistance = dist;
-
-            dist = Vector3.Distance(this.predictedBallPosition, this.goal.transform.position);
-            this.AddReward(dist < this.ballGoalDistance ? 1 : -1);
-            this.ballGoalDistance = dist;
-
-            float angle = Vector3.Angle(this.transform.forward, this.predictedBallPosition - this.transform.position);
-            this.AddReward(angle < this.ballSightAngle ? 1 : -1);
-            this.ballSightAngle = angle;
-        }
-
-        #endregion
     }
 }

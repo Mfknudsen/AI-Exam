@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4434387747152386566
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721828325414312414, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104545495079294519, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104545495079294519, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_TagString
+      value: blueAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447705668250230678, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_SensorName
+      value: BlueRayPerceptionSensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634385360801060563, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634385360801060563, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_TagString
+      value: blueAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 3935507230126719463, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_TagString
+      value: blueAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160761287699065142, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ac689e77971a7d141a02376959a74453, type: 2}
+    - target: {fileID: 7700285512022169889, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_BehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772394634007290126, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Name
+      value: BluePlayerMLAgentTraining Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772394634007290126, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772394634007290126, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_TagString
+      value: blueAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8465923939301296871, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8465923939301296871, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_TagString
+      value: blueAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 9159446695080736372, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}
+      propertyPath: m_SensorName
+      value: BlueRayPerceptionSensorReverse
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 156f2fd89fa6cd84a87cc636bbf76c40, type: 3}

@@ -1,0 +1,48 @@
+{
+    "Soccer": {
+        "checkpoints": [
+            {
+                "steps": 499932,
+                "file_path": "results\\ppo\\Soccer\\Soccer-499932.onnx",
+                "reward": 6.761538308113813,
+                "creation_time": 1717574879.1803179,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Soccer\\Soccer-499932.pt"
+                ]
+            },
+            {
+                "steps": 999764,
+                "file_path": "results\\ppo\\Soccer\\Soccer-999764.onnx",
+                "reward": 4.920013218124708,
+                "creation_time": 1717575868.3167777,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Soccer\\Soccer-999764.pt"
+                ]
+            },
+            {
+                "steps": 1011444,
+                "file_path": "results\\ppo\\Soccer\\Soccer-1011444.onnx",
+                "reward": 3.4387096419757714,
+                "creation_time": 1717576191.4259262,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Soccer\\Soccer-1011444.pt"
+                ]
+            }
+        ],
+        "elo": 1193.082627527098,
+        "final_checkpoint": {
+            "steps": 1011444,
+            "file_path": "results\\ppo\\Soccer.onnx",
+            "reward": 3.4387096419757714,
+            "creation_time": 1717576191.4259262,
+            "auxillary_file_paths": [
+                "results\\ppo\\Soccer\\Soccer-1011444.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.3.0+cpu"
+    }
+}
