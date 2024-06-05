@@ -1,18 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Collections;
 
 public class TransparentCapture : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject targetObject;
+    public Camera screenshotCamera;
+    public int imageWidth = 256;
+    public int imageHeight = 256;
+    public int numberOfAngles = 36;
+    public float[] distances = new float[] { 3f, 5f, 8f, 10f };
+
+    private void Start()
     {
-        
+        StartCoroutine(CaptureImages());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator CaptureImages()
     {
-        
+        RenderTexture renderTexture = new RenderTexture(imageWidth, imageHeight, 24, RenderTextureFormat.ARGB32);
+        screenshotCamera.targetTexture = renderTexture;
+
+        for (int d = 0; d < distances.Length; d++)
+        {
+            float distance = distances[d];
+            for (int i = 0; i < numberOfAngles; i++)
+            {
+                float angle = (360f / numberOfAngles) * i;
+                Vector3 cameraPosition = targetObject.transform.position + new Vector3(distance * Mathf.Sin(angle * Mathf.Deg2Rad), 0, distance * Mathf.Cos(angle * Mathf.Deg2Rad));
+                screenshotCamera.transform.position = cameraPosition;
+                screenshotCamera.transform.LookAt(targetObject.transform);
+                yield return new WaitForEndOfFrame();
+
+                RenderTexture.active = renderTexture;
+                Texture2D screenshot = new Texture2D(imageWidth, imageHeight, TextureFormat.RGBA32, false);
+                screenshot.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
+                screenshot.Apply();
+
+                byte[] bytes = screenshot.EncodeToPNG();
+                File.WriteAllBytes($"Screenshots/{targetObject.name}_d{d}_angle{i}.png", bytes);
+
+                RenderTexture.active = null;
+            }
+        }
+
+        screenshotCamera.targetTexture = null;
+        Destroy(renderTexture);
     }
 }
