@@ -55,12 +55,14 @@ namespace Runtime.Player
         public Vector3 initialPos;
         public float rotSign;
 
+        private bool inCorner;
+
         public override void Initialize()
         {
             FieldEnvironment envController = this.GetComponentInParent<FieldEnvironment>();
             if (envController != null)
             {
-                this.mExistential = 1f / envController.maxEnvironmentSteps;
+                this.mExistential = .5f / envController.maxEnvironmentSteps;
             }
             else
             {
@@ -127,9 +129,6 @@ namespace Runtime.Player
                 _ => rotateDir
             };
 
-            //if (this.teamRole == TeamRole.Striker)
-            //    this.AddReward(.02f * (Vector3.Dot(dirToGo, this.ball.position - this.transform.position) + 1) / 2f);
-
             this.transform.Rotate(rotateDir, Time.deltaTime * 100f);
             this.agentRb.AddForce(dirToGo * this.mSoccerSettings.agentRunSpeed, ForceMode.VelocityChange);
             //this.agentRb.MovePosition(this.transform.position + dirToGo * this.mSoccerSettings.agentRunSpeed * Time.deltaTime);
@@ -140,11 +139,8 @@ namespace Runtime.Player
             if (this.teamRole == TeamRole.Goalie)
             {
                 // Existential bonus for Goalies.
-                if (Vector3.Distance(this.transform.position, this.ownGoal.position) < 4)
-                {
+                if (Vector3.Distance(this.transform.position, this.ownGoal.position) < 5 && !this.inCorner)
                     this.AddReward(this.mExistential);
-                    this.AddReward(.02f * (Vector3.Dot(new Vector3(actionBuffers.DiscreteActions[0],0, actionBuffers.DiscreteActions[1]), this.ball.position - this.transform.position) + 1) / 2f);
-                }
             }
             else if (this.teamRole == TeamRole.Striker)
             {
@@ -192,13 +188,18 @@ namespace Runtime.Player
             }
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (this.teamRole != TeamRole.Striker) return;
-
             if ((this.gameObject.CompareTag("blueAgent") && other.CompareTag("cornerBlue")) ||
                 (this.gameObject.CompareTag("purpleAgent") && other.CompareTag("cornerPurple")))
-                this.AddReward(-2.5f);
+                this.inCorner = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if ((this.gameObject.CompareTag("blueAgent") && other.CompareTag("cornerBlue")) ||
+                (this.gameObject.CompareTag("purpleAgent") && other.CompareTag("cornerPurple")))
+                this.inCorner = false;
         }
 
         /// <summary>
@@ -208,7 +209,7 @@ namespace Runtime.Player
         {
             if (c.gameObject.CompareTag("wall"))
             {
-                this.AddReward(-1);
+                this.AddReward(-.1f);
                 return;
             }
 
@@ -220,14 +221,16 @@ namespace Runtime.Player
                 force = KPower;
             }
 
-            if (this.teamRole == TeamRole.Striker)
-                this.AddReward(this.mBallTouch * Vector3.Dot(
-                    c.transform.position - this.transform.position,
-                    c.transform.position - this.otherGoal.position));
-            else
-                this.AddReward(this.mBallTouch * (1 - Vector3.Dot(
-                    c.transform.position - this.transform.position,
-                    c.transform.position - this.ownGoal.position)));
+            switch (this.teamRole)
+            {
+                case TeamRole.Striker when !this.inCorner:
+                    this.AddReward(this.mBallTouch);
+                    break;
+                case TeamRole.Goalie when
+                    Vector3.Distance(this.transform.position, this.ownGoal.position) < 5:
+                    this.AddReward(this.mBallTouch);
+                    break;
+            }
 
             Vector3 dir = c.contacts[0].point - this.transform.position;
             dir = dir.normalized;
