@@ -8,6 +8,7 @@ public class TransparentCapture : MonoBehaviour
     public Camera screenshotCamera;
     public int imageWidth = 256;
     public int imageHeight = 256;
+    public float maxAngle = 360f;
     public int numberOfAngles = 36;
     public float[] distances = new float[] { 3f, 5f, 8f, 10f };
 
@@ -26,7 +27,7 @@ public class TransparentCapture : MonoBehaviour
             float distance = distances[d];
             for (int i = 0; i < numberOfAngles; i++)
             {
-                float angle = (360f / numberOfAngles) * i;
+                float angle = (maxAngle / numberOfAngles) * i;
                 Vector3 cameraPosition = targetObject.transform.position + new Vector3(distance * Mathf.Sin(angle * Mathf.Deg2Rad), 0.25f, distance * Mathf.Cos(angle * Mathf.Deg2Rad));
                 screenshotCamera.transform.position = cameraPosition;
                 screenshotCamera.transform.LookAt(targetObject.transform);
