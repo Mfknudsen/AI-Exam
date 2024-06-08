@@ -1091,7 +1091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3533262951040742760, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3533262951040742760, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1142,11 +1142,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
---- !u!1 &113272182 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5460620555907185422, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
-  m_PrefabInstance: {fileID: 113272181}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &157439965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2860,7 +2855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783527354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.6307735, y: 3.22713, z: 1.3995044}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2992,7 +2987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3004,15 +2999,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.7071063
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710737
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalRotation.z
@@ -3024,7 +3019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -990
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3043,6 +3038,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be0e237e971d464887cda849d48e778, type: 3}
+--- !u!1 &2082535644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+  m_PrefabInstance: {fileID: 110118975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &761329000087480161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3118,12 +3118,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: maxAngle
-      value: 180
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: targetObject
       value: 
-      objectReference: {fileID: 113272182}
+      objectReference: {fileID: 2082535644}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: screenshotCamera
       value: 
@@ -3134,15 +3134,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[1]
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[2]
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[3]
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5171670253077095924, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: m_Name
