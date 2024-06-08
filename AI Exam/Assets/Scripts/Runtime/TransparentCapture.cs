@@ -32,14 +32,16 @@ public class TransparentCapture : MonoBehaviour
                 screenshotCamera.transform.position = cameraPosition;
                 screenshotCamera.transform.LookAt(targetObject.transform);
                 yield return new WaitForEndOfFrame();
-
+                float _distance = cameraPosition.magnitude;
+                //Reduce to 2 decimal place
+                _distance = Mathf.Round(_distance * 100f) / 100f;
                 RenderTexture.active = renderTexture;
                 Texture2D screenshot = new Texture2D(imageWidth, imageHeight, TextureFormat.RGBA32, false);
                 screenshot.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
                 screenshot.Apply();
 
                 byte[] bytes = screenshot.EncodeToPNG();
-                File.WriteAllBytes($"Screenshots/{targetObject.name}_d{d}_angle{i}.png", bytes);
+                File.WriteAllBytes($"Screenshots/with_distance_labels/{targetObject.name}_{_distance}_angle{i}.png", bytes);
 
                 RenderTexture.active = null;
             }

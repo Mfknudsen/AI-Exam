@@ -459,6 +459,10 @@ PrefabInstance:
       propertyPath: m_BrainParameters.m_ActionSpec.m_NumContinuousActions
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4283100746034715245, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -594,6 +598,10 @@ PrefabInstance:
     - target: {fileID: 5731068019081312042, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_Name
       value: Field
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731068019081312042, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5740584492841121653, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_BrainParameters.VectorActionSpaceType
@@ -1083,7 +1091,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3533262951040742760, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3533262951040742760, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1128,6 +1136,10 @@ PrefabInstance:
     - target: {fileID: 5460620555907185422, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
       propertyPath: m_Name
       value: PurplePlayerCapture
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460620555907185422, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2489,6 +2501,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7874706506349269185, guid: dd5c90638099db74485ec73c134a677d, type: 3}
   m_PrefabInstance: {fileID: 110118975}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1535552420 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+  m_PrefabInstance: {fileID: 110118975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1546245038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2776,7 +2793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5329318198703588670, guid: 6fa0b1545558e264fb944932d13ca5ef, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5329318198703588670, guid: 6fa0b1545558e264fb944932d13ca5ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2957,7 +2974,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3572782635389628674, guid: 7be0e237e971d464887cda849d48e778, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3003,6 +3020,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BluePlayerCapture
       objectReference: {fileID: 0}
+    - target: {fileID: 7167984798204790656, guid: 7be0e237e971d464887cda849d48e778, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3018,7 +3039,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7453818151875510072, guid: 4934e2c1f248d5c44beaa0eb4055e67c, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7453818151875510072, guid: 4934e2c1f248d5c44beaa0eb4055e67c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3064,6 +3085,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PurpleTeamGoal
       objectReference: {fileID: 0}
+    - target: {fileID: 8274960472124472068, guid: 4934e2c1f248d5c44beaa0eb4055e67c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3084,11 +3109,15 @@ PrefabInstance:
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: targetObject
       value: 
-      objectReference: {fileID: 5112448005042997218}
+      objectReference: {fileID: 1535552420}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: screenshotCamera
       value: 
       objectReference: {fileID: 1745978634}
+    - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
+      propertyPath: distances.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[0]
       value: 3
@@ -3104,6 +3133,14 @@ PrefabInstance:
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[3]
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
+      propertyPath: distances.Array.data[4]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
+      propertyPath: distances.Array.data[5]
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5171670253077095924, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: m_Name
@@ -3158,11 +3195,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
---- !u!1 &5112448005042997218 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 923519693386798008, guid: ff4b6aed867401541968502de0db1fb1, type: 3}
-  m_PrefabInstance: {fileID: 7991885115055348462}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7991885115055348462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3175,9 +3207,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueTeamGoal
       objectReference: {fileID: 0}
+    - target: {fileID: 923519693386798008, guid: ff4b6aed867401541968502de0db1fb1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3291089493980281258, guid: ff4b6aed867401541968502de0db1fb1, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3291089493980281258, guid: ff4b6aed867401541968502de0db1fb1, type: 3}
       propertyPath: m_LocalPosition.x
