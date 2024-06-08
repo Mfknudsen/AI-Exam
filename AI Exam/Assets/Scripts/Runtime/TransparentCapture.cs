@@ -39,7 +39,7 @@ public class TransparentCapture : MonoBehaviour
                 screenshot.Apply();
 
                 byte[] bytes = screenshot.EncodeToPNG();
-                File.WriteAllBytes($"Screenshots/{targetObject.name}_d{d}_angle{i}.png", bytes);
+                File.WriteAllBytes($"Screenshots/With background/{targetObject.name}_d{d}_angle{i}.png", bytes);
 
                 RenderTexture.active = null;
             }
