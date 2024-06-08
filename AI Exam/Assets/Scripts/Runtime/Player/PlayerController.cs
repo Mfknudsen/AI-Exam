@@ -17,7 +17,7 @@ namespace Runtime.Player
 
     public sealed class PlayerController : Agent
     {
-        // Note that that the detectable tags are different for the blue and purple teams. The order is
+        // Note that the detectable tags are different for the blue and purple teams. The order is
         // * ball
         // * own goal
         // * opposing goal
@@ -25,7 +25,7 @@ namespace Runtime.Player
         // * own teammate
         // * opposing player
 
-        public enum Position
+        public enum TeamRole
         {
             Generic,
             Striker,
@@ -34,17 +34,20 @@ namespace Runtime.Player
 
         [HideInInspector] public Team team;
 
+        public Transform ownGoal, otherGoal;
+
         private float mKickPower;
 
         // The coefficient for the reward for colliding with a ball. Set using curriculum.
         private float mBallTouch;
-        public Position position;
+        public TeamRole teamRole;
 
         private const float KPower = 2000f;
         private float mExistential;
         private float mLateralSpeed;
         private float mForwardSpeed;
 
+        public Transform ball;
 
         [HideInInspector] public Rigidbody agentRb;
         private SoccerSettings mSoccerSettings;
@@ -52,14 +55,14 @@ namespace Runtime.Player
         public Vector3 initialPos;
         public float rotSign;
 
-        private EnvironmentParameters mResetParams;
+        private bool inCorner;
 
         public override void Initialize()
         {
             FieldEnvironment envController = this.GetComponentInParent<FieldEnvironment>();
             if (envController != null)
             {
-                this.mExistential = 1f / envController.maxEnvironmentSteps;
+                this.mExistential = .5f / envController.maxEnvironmentSteps;
             }
             else
             {
@@ -82,12 +85,12 @@ namespace Runtime.Player
 
             this.initialPos = this.transform.position;
 
-            if (this.position == Position.Goalie)
+            if (this.teamRole == TeamRole.Goalie)
             {
                 this.mLateralSpeed = 1.0f;
                 this.mForwardSpeed = 1.0f;
             }
-            else if (this.position == Position.Striker)
+            else if (this.teamRole == TeamRole.Striker)
             {
                 this.mLateralSpeed = 0.3f;
                 this.mForwardSpeed = 1.3f;
@@ -101,13 +104,10 @@ namespace Runtime.Player
             this.mSoccerSettings = FindObjectOfType<SoccerSettings>();
             this.agentRb = this.GetComponent<Rigidbody>();
             this.agentRb.maxAngularVelocity = 500;
-
-            this.mResetParams = Academy.Instance.EnvironmentParameters;
         }
 
         private void MoveAgent(ActionSegment<int> act)
         {
-            Vector3 dirToGo = Vector3.zero;
             Vector3 rotateDir = Vector3.zero;
 
             this.mKickPower = 0f;
@@ -116,26 +116,11 @@ namespace Runtime.Player
             int rightAxis = act[1];
             int rotateAxis = act[2];
 
-            switch (forwardAxis)
-            {
-                case 1:
-                    dirToGo = this.transform.forward * this.mForwardSpeed;
-                    this.mKickPower = 1f;
-                    break;
-                case 2:
-                    dirToGo = this.transform.forward * -this.mForwardSpeed;
-                    break;
-            }
+            if (forwardAxis == 1)
+                this.mKickPower = 1f;
 
-            switch (rightAxis)
-            {
-                case 1:
-                    dirToGo = this.transform.right * this.mLateralSpeed;
-                    break;
-                case 2:
-                    dirToGo = this.transform.right * -this.mLateralSpeed;
-                    break;
-            }
+            Vector3 dirToGo = this.transform.right * (rightAxis - 1) * this.mLateralSpeed +
+                              this.transform.forward * (forwardAxis - 1) * this.mForwardSpeed;
 
             rotateDir = rotateAxis switch
             {
@@ -145,19 +130,19 @@ namespace Runtime.Player
             };
 
             this.transform.Rotate(rotateDir, Time.deltaTime * 100f);
-            //this.agentRb.AddForce(dirToGo * this.mSoccerSettings.agentRunSpeed, ForceMode.VelocityChange);
-            this.agentRb.MovePosition(this.transform.position +
-                                      dirToGo * this.mSoccerSettings.agentRunSpeed * Time.deltaTime);
+            this.agentRb.AddForce(dirToGo * this.mSoccerSettings.agentRunSpeed, ForceMode.VelocityChange);
+            //this.agentRb.MovePosition(this.transform.position + dirToGo * this.mSoccerSettings.agentRunSpeed * Time.deltaTime);
         }
 
         public override void OnActionReceived(ActionBuffers actionBuffers)
         {
-            if (this.position == Position.Goalie)
+            if (this.teamRole == TeamRole.Goalie)
             {
                 // Existential bonus for Goalies.
-                this.AddReward(this.mExistential);
+                if (Vector3.Distance(this.transform.position, this.ownGoal.position) < 5 && !this.inCorner)
+                    this.AddReward(this.mExistential);
             }
-            else if (this.position == Position.Striker)
+            else if (this.teamRole == TeamRole.Striker)
             {
                 // Existential penalty for Strikers
                 this.AddReward(-this.mExistential);
@@ -203,20 +188,50 @@ namespace Runtime.Player
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if ((this.gameObject.CompareTag("blueAgent") && other.CompareTag("cornerBlue")) ||
+                (this.gameObject.CompareTag("purpleAgent") && other.CompareTag("cornerPurple")))
+                this.inCorner = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if ((this.gameObject.CompareTag("blueAgent") && other.CompareTag("cornerBlue")) ||
+                (this.gameObject.CompareTag("purpleAgent") && other.CompareTag("cornerPurple")))
+                this.inCorner = false;
+        }
+
         /// <summary>
         /// Used to provide a "kick" to the ball.
         /// </summary>
         private void OnCollisionEnter(Collision c)
         {
+            if (c.gameObject.CompareTag("wall"))
+            {
+                this.AddReward(-.1f);
+                return;
+            }
+
             if (!c.gameObject.CompareTag("ball")) return;
 
             float force = KPower * this.mKickPower;
-            if (this.position == Position.Goalie)
+            if (this.teamRole == TeamRole.Goalie)
             {
                 force = KPower;
             }
 
-            this.AddReward(.2f * this.mBallTouch);
+            switch (this.teamRole)
+            {
+                case TeamRole.Striker when !this.inCorner:
+                    this.AddReward(this.mBallTouch);
+                    break;
+                case TeamRole.Goalie when
+                    Vector3.Distance(this.transform.position, this.ownGoal.position) < 5:
+                    this.AddReward(this.mBallTouch);
+                    break;
+            }
+
             Vector3 dir = c.contacts[0].point - this.transform.position;
             dir = dir.normalized;
             c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
@@ -224,8 +239,7 @@ namespace Runtime.Player
 
         public override void OnEpisodeBegin()
         {
-            //this.mBallTouch = this.mResetParams.GetWithDefault("ball_touch", 0);
-            this.mBallTouch = 1;
+            this.mBallTouch = .5f;
         }
     }
 }

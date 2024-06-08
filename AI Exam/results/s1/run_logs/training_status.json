@@ -1,0 +1,66 @@
+{
+    "Soccer": {
+        "checkpoints": [
+            {
+                "steps": 8499726,
+                "file_path": "results\\s1\\Soccer\\Soccer-8499726.onnx",
+                "reward": 3.6962588250543824,
+                "creation_time": 1717683874.3458586,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-8499726.pt"
+                ]
+            },
+            {
+                "steps": 8999776,
+                "file_path": "results\\s1\\Soccer\\Soccer-8999776.onnx",
+                "reward": 5.493116284467331,
+                "creation_time": 1717684868.5845988,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-8999776.pt"
+                ]
+            },
+            {
+                "steps": 9499598,
+                "file_path": "results\\s1\\Soccer\\Soccer-9499598.onnx",
+                "reward": 6.397417774521795,
+                "creation_time": 1717685851.973866,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-9499598.pt"
+                ]
+            },
+            {
+                "steps": 9999024,
+                "file_path": "results\\s1\\Soccer\\Soccer-9999024.onnx",
+                "reward": 2.2164382808830125,
+                "creation_time": 1717686841.9037971,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-9999024.pt"
+                ]
+            },
+            {
+                "steps": 10001024,
+                "file_path": "results\\s1\\Soccer\\Soccer-10001024.onnx",
+                "reward": 3.1103551965743286,
+                "creation_time": 1717686842.2848847,
+                "auxillary_file_paths": [
+                    "results\\s1\\Soccer\\Soccer-10001024.pt"
+                ]
+            }
+        ],
+        "elo": 1370.2052564135618,
+        "final_checkpoint": {
+            "steps": 10001024,
+            "file_path": "results\\s1\\Soccer.onnx",
+            "reward": 3.1103551965743286,
+            "creation_time": 1717686842.2848847,
+            "auxillary_file_paths": [
+                "results\\s1\\Soccer\\Soccer-10001024.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.3.0+cpu"
+    }
+}

@@ -1,6 +1,5 @@
 #region Libraries
 
-using System;
 using UnityEngine;
 
 #endregion
