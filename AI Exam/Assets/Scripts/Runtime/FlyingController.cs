@@ -36,8 +36,6 @@ namespace Runtime
                 2.5f * -Input.GetAxis("Mouse Y") * this.rotationSpeed * Time.deltaTime,
                 Input.GetAxis("Mouse X") * this.rotationSpeed * Time.deltaTime,
                 0f);
-
-            this.transform.eulerAngles = new Vector3(Mathf.Clamp(this.transform.eulerAngles.x, -80, 80), this.transform.eulerAngles.y, 0);
         }
 
         #endregion
