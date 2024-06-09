@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 1109643404322278423, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1439324017612644935, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
@@ -459,6 +463,10 @@ PrefabInstance:
       propertyPath: m_BrainParameters.m_ActionSpec.m_NumContinuousActions
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4283100746034715245, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -530,6 +538,10 @@ PrefabInstance:
     - target: {fileID: 5231734716509457876, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_Name
       value: PurpleTeamGoal
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231734716509457876, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5302221770893705182, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_BrainParameters.VectorActionSpaceType
@@ -857,7 +869,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9109601230304778247, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9144366706926171354, guid: dd5c90638099db74485ec73c134a677d, type: 3}
       propertyPath: moveSpeed
@@ -1137,6 +1149,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5460620555907185422, guid: 7561fca837c3e65438e08d7ddd2622b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1261,6 +1277,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &510100898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5231734716509457876, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+  m_PrefabInstance: {fileID: 110118975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &517578743
 GameObject:
   m_ObjectHideFlags: 0
@@ -3033,16 +3054,15 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7167984798204790656, guid: 7be0e237e971d464887cda849d48e778, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be0e237e971d464887cda849d48e778, type: 3}
---- !u!1 &2082535644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
-  m_PrefabInstance: {fileID: 110118975}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &761329000087480161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3123,7 +3143,7 @@ PrefabInstance:
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: targetObject
       value: 
-      objectReference: {fileID: 2082535644}
+      objectReference: {fileID: 510100898}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: numberOfAngles
       value: 72

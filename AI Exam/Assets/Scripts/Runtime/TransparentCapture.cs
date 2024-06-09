@@ -27,7 +27,7 @@ public class TransparentCapture : MonoBehaviour
             float distance = distances[d];
             for (int i = 0; i < numberOfAngles; i++)
             {
-                float angle = (maxAngle / numberOfAngles) * i;
+                float angle = (maxAngle / numberOfAngles) * i + 180;
                 Vector3 cameraPosition = targetObject.transform.position + new Vector3(distance * Mathf.Sin(angle * Mathf.Deg2Rad), 0.25f, distance * Mathf.Cos(angle * Mathf.Deg2Rad));
                 screenshotCamera.transform.position = cameraPosition;
                 screenshotCamera.transform.LookAt(targetObject.transform);
@@ -39,7 +39,7 @@ public class TransparentCapture : MonoBehaviour
                 screenshot.Apply();
 
                 byte[] bytes = screenshot.EncodeToPNG();
-                File.WriteAllBytes($"Screenshots/InContext/{targetObject.name}_d{d}_angle{i}.png", bytes);
+                File.WriteAllBytes($"Screenshots/InSemiContext/{targetObject.name}_d{d}_angle{i}.png", bytes);
 
                 RenderTexture.active = null;
             }
