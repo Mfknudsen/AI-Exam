@@ -20,6 +20,37 @@ public class BarracudaInference : MonoBehaviour
     string Classify_Image(){
         // Capture and process the image
         float[] inputTensor = CaptureAndProcessImage();
+        
+        // Create a tensor from the processed image
+        Tensor input = new Tensor(1, 64, 64, 3, inputTensor);
+
+        // Execute the model
+        worker.Execute(input);
+
+        // Get the output from our model
+        Tensor output = worker.PeekOutput();
+        float[] outputArray = output.ToReadOnlyArray();
+        
+        // Assuming output shape is (1, 1, 1, 2)
+        //Debug.Log("Model output: " + string.Join(", ", outputArray));
+
+        // Get classification result
+        string prediction = GetClassIndex(outputArray);
+        Debug.Log("Predicted class: " + prediction);
+
+        // Display the captured and processed image for debugging
+        // Texture2D debugTexture = ConvertToTexture2D(inputTensor, 64, 64);
+        // debugImage.texture = debugTexture;
+
+        // Cleanup
+        input.Dispose();
+        output.Dispose();
+        
+        return prediction;
+    }
+    string Classify_Image_With_Distance(){
+        // Capture and process the image
+        float[] inputTensor = CaptureAndProcessImage();
 
         
         // Create a tensor from the processed image
