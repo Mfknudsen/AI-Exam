@@ -39,6 +39,8 @@ public class CoroutineWithData
 
 public class TextHandler : MonoBehaviour
 {
+    public GameObject textField;
+    
     public string input;
     private List<float> embeddingResult;
     private static readonly string apiUrl = "https://api.openai.com/v1/embeddings";
@@ -48,14 +50,16 @@ public class TextHandler : MonoBehaviour
     private Dictionary<string, string> configVariables;
     public IEnumerator Start()
     {
+        textField.SetActive(false);
         configVariables = new Dictionary<string, string>();
         LoadConfig();
         apiKey = configVariables["OPENAI_KEY"];
         
         yield return 5;
         actionTypes = CommandCreator.GetStringCommands();
-        StartCoroutine(ProcessActionTypes());
+        yield return ProcessActionTypes();
         
+        this.textField.SetActive(true);
     }
 
     private void Update()

@@ -1110,6 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06e8a5c33657a648bc06e40c4808bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textField: {fileID: 1257045039}
   input: 
 --- !u!1 &876852245
 GameObject:
