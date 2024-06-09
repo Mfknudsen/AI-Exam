@@ -12,6 +12,8 @@ namespace Runtime
 
         [SerializeField, Min(0.1f)] private float moveSpeed, rotationSpeed;
 
+        private Vector2 turn;
+
         #endregion
 
         #region Update
@@ -31,11 +33,11 @@ namespace Runtime
 
             this.transform.position += moveDirection *
                                        ((Input.GetKey(KeyCode.LeftShift) ? 3 : 1) * this.moveSpeed * Time.deltaTime);
+            
+            this.turn.x += Input.GetAxis("Mouse X") * this.rotationSpeed;
+            this.turn.y += Input.GetAxis("Mouse Y") * this.rotationSpeed;
 
-            this.transform.eulerAngles += new Vector3(
-                2.5f * -Input.GetAxis("Mouse Y") * this.rotationSpeed * Time.deltaTime,
-                Input.GetAxis("Mouse X") * this.rotationSpeed * Time.deltaTime,
-                0f);
+            this.transform.localRotation = Quaternion.Euler(-this.turn.y, this.turn.x, 0);
         }
 
         #endregion
