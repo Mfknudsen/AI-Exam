@@ -31,7 +31,9 @@ public class BarracudaInference : MonoBehaviour
         // Get the output from our model
         Tensor output = worker.PeekOutput();
         float[] outputArray = output.ToReadOnlyArray();
-
+        Tensor secondOutput = worker.PeekOutput("distance_output");
+        float[] distance = secondOutput.ToReadOnlyArray();
+        Debug.Log("Distance: " + distance[0]);
         // Assuming output shape is (1, 1, 1, 2)
         //Debug.Log("Model output: " + string.Join(", ", outputArray));
 
@@ -40,8 +42,8 @@ public class BarracudaInference : MonoBehaviour
         Debug.Log("Predicted class: " + prediction);
 
         // Display the captured and processed image for debugging
-        //Texture2D debugTexture = ConvertToTexture2D(inputTensor, 64, 64);
-        //debugImage.texture = debugTexture;
+        Texture2D debugTexture = ConvertToTexture2D(inputTensor, 64, 64);
+        debugImage.texture = debugTexture;
 
         // Cleanup
         input.Dispose();
@@ -57,15 +59,12 @@ public class BarracudaInference : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.C))
         {  
             Debug.Log("Space key was pressed.");
             Classify_Image();
         }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            print("c");
-        }
+        
     }
     
     private float[] CaptureAndProcessImage()
@@ -110,19 +109,36 @@ public class BarracudaInference : MonoBehaviour
 
     private string GetClassIndex(float[] outputArray)
     {
-        if (outputArray.Length != 2)
+       
+        if (outputArray.Length != 5)
         {
             throw new System.ArgumentException("Output array length is not 2");
         }
 
-        // Find the index of the highest value
-        if (outputArray[0] > outputArray[1])
+        // Find the index of the highest value array of 5
+        int maxIndex = 0;
+        for (int i = 1; i < outputArray.Length; i++)
         {
-            return "cat";
+            if (outputArray[i] > outputArray[maxIndex])
+            {
+                maxIndex = i;
+            }
         }
-        else
+
+        switch (maxIndex)
         {
-            return "dog";
+            case 0:
+                return "ball";
+            case 1:
+                return "bluePlayer";
+            case 2:
+                return "blueGoal";
+            case 3: 
+                return "purplePlayer";
+            case 4:
+                return "purpleGoal";
+            default:
+                return "Unknown";
         }
     }
     
