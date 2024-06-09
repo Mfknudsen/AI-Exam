@@ -35,7 +35,7 @@ namespace Runtime.Commands.Commands
             {
                 this.rb.AddForce(
                     (this.target.position - this.controller.transform.position).normalized *
-                    this.controller.GetSpeed() / 5, ForceMode.VelocityChange);
+                    this.controller.GetSpeed() / 2f, ForceMode.VelocityChange);
 
                 return;
             }
@@ -43,14 +43,14 @@ namespace Runtime.Commands.Commands
             this.stunned = true;
             this.target.GetComponent<PlayerController>().enabled = false;
             this.controller.enabled = true;
-
+            
             if (this.t > 0)
             {
                 this.t -= Time.deltaTime;
 
                 return;
             }
-
+            
             Destroy(this.gameObject);
         }
 

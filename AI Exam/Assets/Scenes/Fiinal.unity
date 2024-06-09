@@ -792,7 +792,7 @@ MonoBehaviour:
   purpleMaterial: {fileID: 2100000, guid: 863fd89923070b94c842b685eb5bb4b4, type: 2}
   blueMaterial: {fileID: 2100000, guid: ac689e77971a7d141a02376959a74453, type: 2}
   randomizePlayersTeamForTraining: 1
-  agentRunSpeed: 1
+  agentRunSpeed: 0.5
 --- !u!114 &1567530039
 MonoBehaviour:
   m_ObjectHideFlags: 0

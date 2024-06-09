@@ -242,7 +242,9 @@ namespace Runtime.Soccer.Player
         {
             this.mBallTouch = .5f;
 
-            Destroy(this.GetComponentInChildren<CommandObject>());
+            CommandObject[] c = this.GetComponentsInChildren<CommandObject>();
+            for (int i = c.Length - 1; i >= 0; i--)
+                Destroy(c[i].gameObject);
         }
 
         public float GetSpeed() => this.mSoccerSettings.agentRunSpeed;
