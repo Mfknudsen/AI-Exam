@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -5,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CoroutineWithData
 {
@@ -40,10 +42,11 @@ public class TextHandler : MonoBehaviour
 
     private static readonly string apiUrl = "https://api.openai.com/v1/embeddings";
     private static readonly List<string> actionTypes = new List<string> { "Emote", "Defense", "Attack" };
+    private Dictionary<string, List<float>> actionTypesEmbeddings = new Dictionary<string, List<float>>();
 
-public void Start()
+    public void Start()
     {
-        
+        StartCoroutine(ProcessActionTypes());
     }
 
     private void Update()
@@ -53,14 +56,28 @@ public void Start()
 
     public void ReadStringInput(string input)
     {
-
-        StartCoroutine(ProcessActionTypes());
-
-        CoroutineWithData cd = new CoroutineWithData(this, GetVectorEmbedding(input));
+        List<float> inputVectorized = await GetEmbeddingAsync(input);
         StartCoroutine(WaitForResult(cd));
+        var desiredAction = GetMostSimilarAction(actionTypesEmbeddings, inputVectorized as List<float>);
+    }
 
 
+    private string GetMostSimilarAction(Dictionary<string, List<float>> vectorsList, List<float> targetVector)
+    {
+        var highestValue = 0.00d;
+        string action = "";
 
+        foreach (KeyValuePair<string, List<float>> kvp in vectorsList) { 
+            
+            var result = GetCosineSimilarity(kvp.Value, targetVector);
+            if(result > highestValue)
+            {
+                highestValue = result;
+                action = kvp.Key;
+            }
+
+        }
+        return action;
     }
 
     private IEnumerator ProcessActionTypes()
@@ -74,6 +91,8 @@ public void Start()
             {
                 List<float> actionTypeEmbedding = actionTypesVectorized.result as List<float>;
                 Debug.Log("Embedding for " + actionType + " is " + string.Join(", ", actionTypeEmbedding));
+
+                actionTypesEmbeddings[actionType] = actionTypeEmbedding;
             }
             else
             {
@@ -113,6 +132,26 @@ public void Start()
         yield return embedding;
     }
 
+    public static double GetCosineSimilarity(List<float> V1, List<float> V2)
+    {
+                                        if (V1 == null || V2 == null) { return 0; }
+        if (V1.Count == 0 || V2.Count == 0) { return  0; }
+
+        int N = 0;
+        N = ((V2.Count < V1.Count) ? V2.Count : V1.Count);
+        double dot = 0.0f;
+        double mag1 = 0.0f;
+        double mag2 = 0.0f;
+        for (int n = 0; n < N; n++)
+        {
+            dot += V1[n] * V2[n];
+            mag1 += Math.Pow(V1[n], 2);
+            mag2 += Math.Pow(V2[n], 2);
+        }
+
+        return dot / (Math.Sqrt(mag1) * Math.Sqrt(mag2));
+    }
+
     private async Task<List<float>> GetEmbeddingAsync(string text)
     {
         using (var client = new HttpClient())
@@ -140,7 +179,7 @@ public void Start()
             return responseObject.data[0].embedding;
         }
     }
-
+        
     public List<float> GetStoredEmbedding()
     {
         return embeddingResult;
