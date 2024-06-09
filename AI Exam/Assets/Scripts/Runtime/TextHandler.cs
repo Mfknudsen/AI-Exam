@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using Runtime.Commands;
+using Newtonsoft.Json;
 public class CoroutineWithData
 {
     public Coroutine coroutine { get; private set; }
@@ -40,12 +40,16 @@ public class TextHandler : MonoBehaviour
     public string input;
     private List<float> embeddingResult;
     private static readonly string apiUrl = "https://api.openai.com/v1/embeddings";
-    private static readonly List<string> actionTypes = new List<string> { "Emote", "Defense", "Attack" };
+    private static readonly string apiKey = "";
+    private static List<string> actionTypes = new List<string> { "Emote", "Defense", "Attack" };
     private Dictionary<string, List<float>> actionTypesEmbeddings = new Dictionary<string, List<float>>();
 
-    public void Start()
+    public IEnumerator Start()
     {
+        yield return 5;
+        actionTypes = CommandCreator.GetStringCommands();
         StartCoroutine(ProcessActionTypes());
+        
     }
 
     private void Update()
@@ -163,18 +167,20 @@ public class TextHandler : MonoBehaviour
                 input = text,
                 model = "text-embedding-3-small"
             };
-
+           ;
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(apiUrl, content);
 
             if (!response.IsSuccessStatusCode)
             {
                 Debug.LogError($"Error: {response.StatusCode}");
+                Debug.LogError($"Content: {JsonUtility.ToJson(requestBody)}");
+                
                 return null;
             }
 
             var responseString = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<OpenAIResponse>(responseString);
+            var responseObject =  JsonConvert.DeserializeObject<OpenAIResponse>(responseString);
 
             return responseObject.data[0].embedding;
         }

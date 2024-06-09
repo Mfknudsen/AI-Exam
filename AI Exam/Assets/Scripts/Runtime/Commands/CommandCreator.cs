@@ -11,13 +11,13 @@ namespace Runtime.Commands
 {
     public class CommandCreator : MonoBehaviour
     {
-        private List<Command> commands;
+        private static List<Command> commands;
 
-        [SerializeField] private List<GameObject> commandPrefabs;
+        [SerializeField] private  List<GameObject> commandPrefabs;
 
         private void Start()
         {
-            this.commands = new List<Command>();
+            commands = new List<Command>();
 
             for (int i = 0; i < this.transform.parent.childCount; i++)
             {
@@ -39,8 +39,8 @@ namespace Runtime.Commands
                                 PlayerTransform = obj.transform
                             };
 
-                            if (this.commands.All(c => c.CommandText != command.CommandText))
-                                this.commands.Add(command);
+                            if (commands.All(c => c.CommandText != command.CommandText))
+                                commands.Add(command);
                         }
                         else
                         {
@@ -62,8 +62,8 @@ namespace Runtime.Commands
                                     TargetTransform = this.transform.parent.GetChild(j)
                                 };
                                 
-                                if (this.commands.All(c => c.CommandText != command.CommandText))
-                                    this.commands.Add(command);
+                                if (commands.All(c => c.CommandText != command.CommandText))
+                                    commands.Add(command);
                             }
                         }
                     }
@@ -79,22 +79,22 @@ namespace Runtime.Commands
                         CommandText = commandPrefab.GetComponent<CommandObject>().commandText
                     };
 
-                    if (this.commands.All(c => c.CommandText != command.CommandText))
-                        this.commands.Add(command);
+                    if (commands.All(c => c.CommandText != command.CommandText))
+                        commands.Add(command);
                 }
             }
         }
 
-        public List<string> GetStringCommands() =>
-            this.commands.Select(c => c.CommandText).ToList();
+        public static List<string> GetStringCommands() =>
+            commands.Select(c => c.CommandText).ToList();
 
         public void SpawnCommand(int commandIndex)
         {
-            GameObject obj = Instantiate(this.commands[commandIndex].CommandObject, Vector3.zero, Quaternion.identity,
-                this.commands[commandIndex].PlayerTransform);
+            GameObject obj = Instantiate(commands[commandIndex].CommandObject, Vector3.zero, Quaternion.identity,
+                commands[commandIndex].PlayerTransform);
 
             if (obj.GetComponent<TargetCommandObject>() is { } commandObject)
-                commandObject.SetTarget(this.commands[commandIndex].TargetTransform);
+                commandObject.SetTarget(commands[commandIndex].TargetTransform);
         }
     }
 
