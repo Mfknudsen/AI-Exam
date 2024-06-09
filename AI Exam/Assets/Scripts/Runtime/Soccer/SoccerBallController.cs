@@ -1,11 +1,11 @@
 #region Libraries
 
-using Runtime.Player;
+using Runtime.Soccer.Player;
 using UnityEngine;
 
 #endregion
 
-namespace Runtime
+namespace Runtime.Soccer
 {
     public class SoccerBallController : MonoBehaviour
     {
@@ -14,11 +14,13 @@ namespace Runtime
         public string purpleGoalTag; //will be used to check if collided with purple goal
         public string blueGoalTag; //will be used to check if collided with blue goal
 
-        private void Start() => 
-            this.envController = this.area.GetComponent<FieldEnvironment>();
+        private void Start() =>
+            this.envController = this.area?.GetComponent<FieldEnvironment>();
 
         private void OnCollisionEnter(Collision col)
         {
+            if (this.envController == null) return;
+
             if (col.gameObject.CompareTag(this.purpleGoalTag)) //ball touched purple goal
                 this.envController.GoalTouched(Team.Blue);
 

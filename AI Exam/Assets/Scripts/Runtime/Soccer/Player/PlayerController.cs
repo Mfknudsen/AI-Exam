@@ -7,7 +7,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Runtime.Player
+namespace Runtime.Soccer.Player
 {
     public enum Team
     {
@@ -31,7 +31,7 @@ namespace Runtime.Player
             Striker,
             Goalie,
         }
-
+        
         [HideInInspector] public Team team;
 
         public Transform ownGoal, otherGoal;
@@ -241,5 +241,7 @@ namespace Runtime.Player
         {
             this.mBallTouch = .5f;
         }
+
+        public float GetSpeed() => this.mSoccerSettings.agentRunSpeed;
     }
 }

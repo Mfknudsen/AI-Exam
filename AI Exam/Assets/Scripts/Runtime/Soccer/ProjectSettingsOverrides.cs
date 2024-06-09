@@ -5,11 +5,11 @@ using UnityEngine;
 
 #endregion
 
-namespace Runtime
+namespace Runtime.Soccer
 {
     /// <summary>
     /// A helper class for the ML-Agents example scenes to override various
-    /// global settings, and restore them afterwards.
+    /// global settings, and restore them afterward.
     /// This can modify some Physics and time-stepping properties, so you
     /// shouldn't copy it into your project unless you know what you're doing.
     /// </summary>

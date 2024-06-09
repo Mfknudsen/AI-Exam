@@ -4,7 +4,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Runtime.Player
+namespace Runtime.Soccer.Player
 {
     public sealed class CameraController : MonoBehaviour
     {

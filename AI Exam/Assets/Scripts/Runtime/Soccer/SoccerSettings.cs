@@ -4,7 +4,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Runtime
+namespace Runtime.Soccer
 {
     public class SoccerSettings : MonoBehaviour
     {

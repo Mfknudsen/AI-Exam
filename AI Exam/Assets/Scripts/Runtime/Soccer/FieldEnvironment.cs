@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Runtime.Player;
+using Runtime.Soccer.Player;
 using Unity.MLAgents;
 using UnityEngine;
 
-namespace Runtime
+namespace Runtime.Soccer
 {
     public class FieldEnvironment : MonoBehaviour
     {
@@ -15,7 +15,6 @@ namespace Runtime
             [HideInInspector] public Quaternion startingRot;
             [HideInInspector] public Rigidbody rb;
         }
-
 
         /// <summary>
         /// Max Academy steps before this platform resets

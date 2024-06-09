@@ -8,7 +8,7 @@ using UnityEngine.PlayerLoop;
 
 #endregion
 
-namespace Runtime.Player
+namespace Runtime.Soccer.Player
 {
     public static class CameraUpdater
     {
