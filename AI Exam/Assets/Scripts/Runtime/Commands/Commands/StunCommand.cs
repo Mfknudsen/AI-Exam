@@ -31,7 +31,7 @@ namespace Runtime.Commands.Commands
         private void Update()
         {
             if (!this.stunned && Vector3.Distance(this.controller.transform.position, this.target.position) >
-                this.radius * 2.5f)
+                this.radius * this.target.localScale.y * 2.5f)
             {
                 this.rb.AddForce(
                     (this.target.position - this.controller.transform.position).normalized *
@@ -43,14 +43,14 @@ namespace Runtime.Commands.Commands
             this.stunned = true;
             this.target.GetComponent<PlayerController>().enabled = false;
             this.controller.enabled = true;
-            
+
             if (this.t > 0)
             {
                 this.t -= Time.deltaTime;
 
                 return;
             }
-            
+
             Destroy(this.gameObject);
         }
 

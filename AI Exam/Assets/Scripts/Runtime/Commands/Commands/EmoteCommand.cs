@@ -51,8 +51,6 @@ namespace Runtime.Commands.Commands
 
         private void OnDestroy()
         {
-            Debug.Log("S");
-
             this.controller.enabled = true;
         }
     }
