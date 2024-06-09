@@ -2497,11 +2497,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7874706506349269185, guid: dd5c90638099db74485ec73c134a677d, type: 3}
   m_PrefabInstance: {fileID: 110118975}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1504757838 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9109601230304778247, guid: dd5c90638099db74485ec73c134a677d, type: 3}
-  m_PrefabInstance: {fileID: 110118975}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1546245038
 GameObject:
   m_ObjectHideFlags: 0
@@ -3043,6 +3038,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7be0e237e971d464887cda849d48e778, type: 3}
+--- !u!1 &2082535644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4212872983973582621, guid: dd5c90638099db74485ec73c134a677d, type: 3}
+  m_PrefabInstance: {fileID: 110118975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &761329000087480161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3118,12 +3118,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: maxAngle
-      value: 180
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: targetObject
       value: 
-      objectReference: {fileID: 1504757838}
+      objectReference: {fileID: 2082535644}
+    - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
+      propertyPath: numberOfAngles
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: screenshotCamera
       value: 
@@ -3134,15 +3138,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[1]
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[2]
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2134495945570348583, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: distances.Array.data[3]
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5171670253077095924, guid: 7542325b5b40e0345b086eb2f9f5451e, type: 3}
       propertyPath: m_Name
