@@ -49,7 +49,7 @@ namespace Runtime.Commands
                                 if (i == j)
                                     continue;
 
-                                if (this.transform.parent.GetChild(j).GetComponent<CommandObject>() == null)
+                                if (this.transform.parent.GetChild(j).GetComponent<PlayerController>() == null)
                                     continue;
 
                                 Command command = new Command
@@ -61,7 +61,7 @@ namespace Runtime.Commands
                                     PlayerTransform = obj.transform,
                                     TargetTransform = this.transform.parent.GetChild(j)
                                 };
-
+                                
                                 if (this.commands.All(c => c.CommandText != command.CommandText))
                                     this.commands.Add(command);
                             }
