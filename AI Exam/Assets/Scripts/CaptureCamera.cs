@@ -1,26 +1,29 @@
+using TMPro;
 using UnityEngine;
 using Unity.Barracuda;
-using UnityEngine.UI;  // Make sure you have a UI Image to display the texture
+using UnityEngine.UI; // Make sure you have a UI Image to display the texture
 
 public class BarracudaInference : MonoBehaviour
 {
     public NNModel modelAsset;
     private IWorker worker;
     public Camera cam;
-    public RawImage debugImage;  // UI RawImage to display the texture
+    public RawImage debugImage; // UI RawImage to display the texture
+
+    public TextMeshProUGUI textMeshProUGUI;
 
     void Start()
     {
         // Load the model and create a worker
         var model = ModelLoader.Load(modelAsset);
         worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
-        
     }
 
-    string Classify_Image(){
+    string Classify_Image()
+    {
         // Capture and process the image
         float[] inputTensor = CaptureAndProcessImage();
-        
+
         // Create a tensor from the processed image
         Tensor input = new Tensor(1, 64, 64, 3, inputTensor);
 
@@ -30,13 +33,14 @@ public class BarracudaInference : MonoBehaviour
         // Get the output from our model
         Tensor output = worker.PeekOutput();
         float[] outputArray = output.ToReadOnlyArray();
-        
+
         // Assuming output shape is (1, 1, 1, 2)
         //Debug.Log("Model output: " + string.Join(", ", outputArray));
 
         // Get classification result
         string prediction = GetClassIndex(outputArray);
         Debug.Log("Predicted class: " + prediction);
+        this.textMeshProUGUI.text = $"Predicted class: {prediction}";
 
         // Display the captured and processed image for debugging
         // Texture2D debugTexture = ConvertToTexture2D(inputTensor, 64, 64);
@@ -45,14 +49,16 @@ public class BarracudaInference : MonoBehaviour
         // Cleanup
         input.Dispose();
         output.Dispose();
-        
+
         return prediction;
     }
-    string Classify_Image_With_Distance(){
+
+    string Classify_Image_With_Distance()
+    {
         // Capture and process the image
         float[] inputTensor = CaptureAndProcessImage();
 
-        
+
         // Create a tensor from the processed image
         Tensor input = new Tensor(1, 64, 64, 3, inputTensor);
 
@@ -79,10 +85,10 @@ public class BarracudaInference : MonoBehaviour
         // Cleanup
         input.Dispose();
         output.Dispose();
-        
+
         return prediction;
     }
-    
+
     void OnDestroy()
     {
         worker.Dispose();
@@ -90,14 +96,13 @@ public class BarracudaInference : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {  
-            Debug.Log("Space key was pressed.");
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Mouse 1 was pressed.");
             Classify_Image();
         }
-        
     }
-    
+
     private float[] CaptureAndProcessImage()
     {
         // Create a RenderTexture with the same size as the input expected by the model
@@ -129,18 +134,17 @@ public class BarracudaInference : MonoBehaviour
         float[] modelInput = new float[64 * 64 * 3];
         for (int i = 0; i < pixels.Length; i++)
         {
-            modelInput[i * 3] = pixels[i].r ;
-            modelInput[i * 3 + 1] = pixels[i].g ;
-            modelInput[i * 3 + 2] = pixels[i].b ;
+            modelInput[i * 3] = pixels[i].r;
+            modelInput[i * 3 + 1] = pixels[i].g;
+            modelInput[i * 3 + 2] = pixels[i].b;
         }
-        
+
         return modelInput;
     }
-    
+
 
     private string GetClassIndex(float[] outputArray)
     {
-       
         if (outputArray.Length != 5)
         {
             throw new System.ArgumentException("Output array length is not 2");
@@ -164,7 +168,7 @@ public class BarracudaInference : MonoBehaviour
                 return "bluePlayer";
             case 2:
                 return "blueGoal";
-            case 3: 
+            case 3:
                 return "purplePlayer";
             case 4:
                 return "purpleGoal";
@@ -172,7 +176,7 @@ public class BarracudaInference : MonoBehaviour
                 return "Unknown";
         }
     }
-    
+
     private void DebugInputTensor(float[] tensorData, int width, int height)
     {
         Debug.Log("Debugging Input Tensor:");
@@ -184,10 +188,11 @@ public class BarracudaInference : MonoBehaviour
                 int index = (i * width + j) * 3;
                 row += $"({tensorData[index]:F2}, {tensorData[index + 1]:F2}, {tensorData[index + 2]:F2}) ";
             }
+
             Debug.Log(row);
         }
     }
-    
+
     private Texture2D ConvertToTexture2D(float[] tensorData, int width, int height)
     {
         Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
@@ -197,8 +202,9 @@ public class BarracudaInference : MonoBehaviour
             float r = tensorData[i * 3];
             float g = tensorData[i * 3 + 1];
             float b = tensorData[i * 3 + 2];
-            pixels[i] = new Color(r, g, b, 1.0f);  // Assuming the tensor data is normalized
+            pixels[i] = new Color(r, g, b, 1.0f); // Assuming the tensor data is normalized
         }
+
         texture.SetPixels(pixels);
         texture.Apply();
         return texture;
