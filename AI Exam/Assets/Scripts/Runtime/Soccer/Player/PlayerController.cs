@@ -1,5 +1,6 @@
 #region Libraries
 
+using Runtime.Commands;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
@@ -31,7 +32,7 @@ namespace Runtime.Soccer.Player
             Striker,
             Goalie,
         }
-        
+
         [HideInInspector] public Team team;
 
         public Transform ownGoal, otherGoal;
@@ -240,6 +241,8 @@ namespace Runtime.Soccer.Player
         public override void OnEpisodeBegin()
         {
             this.mBallTouch = .5f;
+
+            Destroy(this.GetComponentInChildren<CommandObject>());
         }
 
         public float GetSpeed() => this.mSoccerSettings.agentRunSpeed;
