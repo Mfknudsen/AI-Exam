@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,6 +13,7 @@ public class CoroutineWithData
 {
     public Coroutine coroutine { get; private set; }
     private object _result;
+    
     public object result
     {
         get { return _result; }
@@ -40,12 +42,16 @@ public class TextHandler : MonoBehaviour
     public string input;
     private List<float> embeddingResult;
     private static readonly string apiUrl = "https://api.openai.com/v1/embeddings";
-    private static readonly string apiKey = "";
+    private static string apiKey = "";
     private static List<string> actionTypes = new List<string> { "Emote", "Defense", "Attack" };
     private Dictionary<string, List<float>> actionTypesEmbeddings = new Dictionary<string, List<float>>();
-
+    private Dictionary<string, string> configVariables;
     public IEnumerator Start()
     {
+        configVariables = new Dictionary<string, string>();
+        LoadConfig();
+        apiKey = configVariables["OPENAI_KEY"];
+        
         yield return 5;
         actionTypes = CommandCreator.GetStringCommands();
         StartCoroutine(ProcessActionTypes());
@@ -62,6 +68,7 @@ public class TextHandler : MonoBehaviour
         List<float> inputVectorized = await GetEmbeddingAsync(input);
         var desiredAction = GetMostSimilarAction(actionTypesEmbeddings, inputVectorized as List<float>);
         Debug.Log("Desired action is " + desiredAction);
+        CommandCreator.SpawnCommand(actionTypes.IndexOf(desiredAction));
     }
 
 
@@ -154,7 +161,20 @@ public class TextHandler : MonoBehaviour
 
         return dot / (Math.Sqrt(mag1) * Math.Sqrt(mag2));
     }
+    void LoadConfig()
+    {
+        string path = "Assets/config.env";
+        string[] lines = File.ReadAllLines(path);
 
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split('=');
+            if (parts.Length == 2)
+            {
+                configVariables[parts[0]] = parts[1];
+            }
+        }
+    }
     private async Task<List<float>> GetEmbeddingAsync(string text)
     {
         using (var client = new HttpClient())

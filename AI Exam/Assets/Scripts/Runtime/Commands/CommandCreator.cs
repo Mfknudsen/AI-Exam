@@ -76,7 +76,9 @@ namespace Runtime.Commands
 
                     Command command = new Command
                     {
-                        CommandText = commandPrefab.GetComponent<CommandObject>().commandText
+                        CommandText = commandPrefab.GetComponent<CommandObject>().commandText,
+                        CommandObject = commandPrefab,
+                        PlayerTransform = transform
                     };
 
                     if (commands.All(c => c.CommandText != command.CommandText))
@@ -88,7 +90,7 @@ namespace Runtime.Commands
         public static List<string> GetStringCommands() =>
             commands.Select(c => c.CommandText).ToList();
 
-        public void SpawnCommand(int commandIndex)
+        public static void SpawnCommand(int commandIndex)
         {
             GameObject obj = Instantiate(commands[commandIndex].CommandObject, Vector3.zero, Quaternion.identity,
                 commands[commandIndex].PlayerTransform);

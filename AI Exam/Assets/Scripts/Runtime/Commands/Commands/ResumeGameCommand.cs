@@ -13,8 +13,10 @@ namespace Runtime.Commands.Commands
         {
             foreach (Transform t in this.transform.parent.parent)
             {
-                if (t.GetComponent<Rigidbody>() is { } controller)
+                Rigidbody controller = t.GetComponent<Rigidbody>();
+                if (controller != null)
                     controller.isKinematic = false;
+                
             }
 
             yield break;
