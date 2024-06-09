@@ -13,7 +13,7 @@ namespace Runtime.Commands
     {
         private static List<Command> commands;
 
-        [SerializeField] private  List<GameObject> commandPrefabs;
+        [SerializeField] private List<GameObject> commandPrefabs;
 
         private void Start()
         {
@@ -61,7 +61,7 @@ namespace Runtime.Commands
                                     PlayerTransform = obj.transform,
                                     TargetTransform = this.transform.parent.GetChild(j)
                                 };
-                                
+
                                 if (commands.All(c => c.CommandText != command.CommandText))
                                     commands.Add(command);
                             }
@@ -92,8 +92,7 @@ namespace Runtime.Commands
 
         public static void SpawnCommand(int commandIndex)
         {
-            GameObject obj = Instantiate(commands[commandIndex].CommandObject, Vector3.zero, Quaternion.identity,
-                commands[commandIndex].PlayerTransform);
+            GameObject obj = Instantiate(commands[commandIndex].CommandObject, commands[commandIndex].PlayerTransform);
 
             if (obj.GetComponent<TargetCommandObject>() is { } commandObject)
                 commandObject.SetTarget(commands[commandIndex].TargetTransform);

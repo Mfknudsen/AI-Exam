@@ -1,6 +1,6 @@
 #region Libraries
 
-using System.Collections;
+using System;
 using Runtime.Soccer.Player;
 using UnityEngine;
 
@@ -12,35 +12,48 @@ namespace Runtime.Commands.Commands
     {
         public int jumpCount;
 
-        protected override IEnumerator Command()
-        {
-            PlayerController controller = this.transform.parent.GetComponent<PlayerController>();
-            controller.enabled = false;
+        private PlayerController controller;
 
-            float y = this.transform.position.y;
-            int count = 0;
-            while (count < this.jumpCount)
+        private float y, yForce;
+        private int count;
+
+        private void Start()
+        {
+            this.controller = this.transform.parent.GetComponent<PlayerController>();
+            this.controller.enabled = false;
+
+            this.y = this.transform.position.y;
+            this.count = 0;
+        }
+
+        private void Update()
+        {
+            if (this.count < this.jumpCount)
             {
-                float yForce = 5;
-                this.transform.parent.position += Vector3.up * yForce * Time.deltaTime;
-                yield return null;
-                while (this.transform.parent.position.y > y)
+                this.transform.parent.position += Vector3.up * (this.yForce * Time.deltaTime);
+                if (this.transform.parent.position.y > this.y)
                 {
-                    yForce -= 9.81f * Time.deltaTime;
-                    this.transform.parent.position += Vector3.up * yForce * Time.deltaTime;
+                    this.yForce -= 9.81f * Time.deltaTime;
+                    this.transform.parent.position += Vector3.up * (this.yForce * Time.deltaTime);
                     this.transform.parent.Rotate(Vector3.up, 500 * Time.deltaTime);
-                    Debug.Log(yForce);
-                    yield return null;
+                    return;
                 }
 
-                this.transform.position = new Vector3(this.transform.position.x, y, this.transform.position.z);
+                this.transform.position = new Vector3(this.transform.position.x, this.y, this.transform.position.z);
 
-                count++;
-
-                yield return new WaitForSeconds(.5f);
+                this.count++;
+                this.yForce = 5;
+                return;
             }
 
-            controller.enabled = true;
+            Destroy(this.gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("S");
+
+            this.controller.enabled = true;
         }
     }
 }

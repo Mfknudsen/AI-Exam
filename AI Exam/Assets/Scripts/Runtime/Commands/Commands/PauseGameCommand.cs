@@ -1,6 +1,5 @@
 #region Libraries
 
-using System.Collections;
 using UnityEngine;
 
 #endregion
@@ -9,15 +8,20 @@ namespace Runtime.Commands.Commands
 {
     public class PauseGameCommand : CommandObject
     {
-        protected override IEnumerator Command()
+        private void Start()
         {
             foreach (Transform t in this.transform.parent.parent)
             {
-                if (t.GetComponent<Rigidbody>() is { } controller)
+                if (!(t.gameObject.CompareTag("blueAgent") || t.gameObject.CompareTag("purpleAgent") ||
+                      t.gameObject.CompareTag("ball")))
+                    continue;
+
+                Rigidbody controller = t.GetComponent<Rigidbody>();
+                if (controller != null)
                     controller.isKinematic = true;
             }
 
-            yield break;
+            Destroy(this.gameObject);
         }
     }
 }

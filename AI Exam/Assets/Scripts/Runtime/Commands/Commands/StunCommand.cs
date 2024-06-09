@@ -1,6 +1,5 @@
 #region Libraries
 
-using System.Collections;
 using Runtime.Soccer.Player;
 using UnityEngine;
 
@@ -10,26 +9,55 @@ namespace Runtime.Commands.Commands
 {
     public class StunCommand : TargetCommandObject
     {
-        protected override IEnumerator Command()
-        {
-            PlayerController controller = this.transform.parent.GetComponent<PlayerController>();
-            controller.enabled = false;
-            Rigidbody rb = this.transform.parent.GetComponent<Rigidbody>();
-            float radius = this.transform.parent.GetComponent<CapsuleCollider>().radius;
+        private Rigidbody rb;
 
-            while (Vector3.Distance(this.transform.position, this.target.position) > radius * radius)
+        private float radius;
+
+        private PlayerController controller;
+
+        private bool stunned;
+
+        private float t = 5;
+
+        private void Start()
+        {
+            this.controller = this.transform.parent.GetComponent<PlayerController>();
+            this.rb = this.controller.GetComponent<Rigidbody>();
+            this.controller.enabled = false;
+
+            this.radius = this.transform.parent.GetComponent<CapsuleCollider>().radius;
+        }
+
+        private void Update()
+        {
+            if (!this.stunned && Vector3.Distance(this.controller.transform.position, this.target.position) >
+                this.radius * 2.5f)
             {
-                rb.AddForce((this.target.position - this.transform.position).normalized * controller.GetSpeed() *
-                            Time.deltaTime);
+                this.rb.AddForce(
+                    (this.target.position - this.controller.transform.position).normalized *
+                    this.controller.GetSpeed() / 5, ForceMode.VelocityChange);
+
+                return;
             }
 
+            this.stunned = true;
             this.target.GetComponent<PlayerController>().enabled = false;
+            this.controller.enabled = true;
 
-            controller.enabled = true;
+            if (this.t > 0)
+            {
+                this.t -= Time.deltaTime;
 
-            yield return new WaitForSeconds(1);
+                return;
+            }
 
+            Destroy(this.gameObject);
+        }
+
+        private void OnDestroy()
+        {
             this.target.GetComponent<PlayerController>().enabled = true;
+            this.controller.enabled = true;
         }
     }
 }
