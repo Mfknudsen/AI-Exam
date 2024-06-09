@@ -15,8 +15,9 @@ namespace Runtime.Commands.Commands
             PlayerController controller = this.transform.parent.GetComponent<PlayerController>();
             controller.enabled = false;
             Rigidbody rb = this.transform.parent.GetComponent<Rigidbody>();
+            float radius = this.transform.parent.GetComponent<CapsuleCollider>().radius;
 
-            while (Vector3.Distance(this.transform.position, this.target.position) > 1)
+            while (Vector3.Distance(this.transform.position, this.target.position) > radius * radius)
             {
                 rb.AddForce((this.target.position - this.transform.position).normalized * controller.GetSpeed() *
                             Time.deltaTime);
