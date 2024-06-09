@@ -39,7 +39,6 @@ public class TextHandler : MonoBehaviour
 {
     public string input;
     private List<float> embeddingResult;
-
     private static readonly string apiUrl = "https://api.openai.com/v1/embeddings";
     private static readonly List<string> actionTypes = new List<string> { "Emote", "Defense", "Attack" };
     private Dictionary<string, List<float>> actionTypesEmbeddings = new Dictionary<string, List<float>>();
@@ -54,11 +53,11 @@ public class TextHandler : MonoBehaviour
         
     }
 
-    public void ReadStringInput(string input)
+    public async void ReadStringInput(string input)
     {
         List<float> inputVectorized = await GetEmbeddingAsync(input);
-        StartCoroutine(WaitForResult(cd));
         var desiredAction = GetMostSimilarAction(actionTypesEmbeddings, inputVectorized as List<float>);
+        Debug.Log("Desired action is " + desiredAction);
     }
 
 
@@ -156,6 +155,7 @@ public class TextHandler : MonoBehaviour
     {
         using (var client = new HttpClient())
         {
+            
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 
             var requestBody = new
